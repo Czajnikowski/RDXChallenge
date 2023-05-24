@@ -50,7 +50,7 @@ struct Start: Reducer {
         Scope(
             state: /State.main,
             action: /Action.main,
-            child: Main.init
+            child: EmptyReducer.init
         )
 
         Reduce { state, action in

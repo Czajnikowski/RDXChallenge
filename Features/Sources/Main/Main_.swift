@@ -10,7 +10,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-public struct Main: Reducer {
+public struct Main {
     public struct State {
         let name: String
 
@@ -22,18 +22,12 @@ public struct Main: Reducer {
     public enum Action {
         case signOutTapped
     }
-
-    public init() {}
-
-    public func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        .none
-    }
 }
 
 public struct MainView: View {
-    private let store: StoreOf<Main>
+    private let store: Store<Main.State, Main.Action>
 
-    public init(store: StoreOf<Main>) {
+    public init(store: Store<Main.State, Main.Action>) {
         self.store = store
     }
 
