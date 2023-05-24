@@ -18,13 +18,30 @@ struct Start: Reducer {
     }
 
     enum Action {
+        case signedIn(LoadableStateAction<State>)
+
         case onboarding(Onboarding.Action)
         case main(Main.Action)
+    }
+
+    enum Constant {
+        fileprivate static let signedInUserDefaultsKey = "hardcoded key for now, sorry, no time"
     }
 
     @Dependency(\.userDefaults) var userDefaults
 
     var body: some ReducerProtocol<State, Action> {
+        Scope(
+            state: \.self,
+            action: /Action.signedIn
+        ) {
+            ProviderToStateReducer {
+                userDefaults.string(forKey: Constant.signedInUserDefaultsKey)
+                    .map(Main.State.init)
+                    .map(State.main) ?? State.onboarding()
+            }
+        }
+
         Scope(
             state: /State.onboarding,
             action: /Action.onboarding,
@@ -35,6 +52,7 @@ struct Start: Reducer {
             action: /Action.main,
             child: Main.init
         )
+
         Reduce { state, action in
             switch action {
             case .onboarding(.path(.element(id: _, action: .confirmPIN(.nextTapped)))):
@@ -48,10 +66,10 @@ struct Start: Reducer {
                     /// For some reason it doesn't work in the Preview 🤷🏼‍♂️
                     state = .main(.init(name: name))
 
-                    return .fireAndForget {
+                    return .run { _ in
                         userDefaults.set(
                             name,
-                            forKey: "hardcoded key for now, sorry, no time"
+                            forKey: Constant.signedInUserDefaultsKey
                         )
                     }
                 }
@@ -61,10 +79,10 @@ struct Start: Reducer {
             case .main(.signOutTapped):
                 state = .onboarding()
 
-                return .fireAndForget {
+                return .run { _ in
                     userDefaults.set(
                         String?.none,
-                        forKey: "hardcoded key for now, sorry, no time"
+                        forKey: Constant.signedInUserDefaultsKey
                     )
                 }
 
@@ -93,6 +111,9 @@ struct StartView: View {
                  action: Start.Action.main,
                  then: MainView.init(store:)
             )
+        }
+        .task {
+            ViewStore(store.stateless).send(.signedIn(.loadState))
         }
     }
 }
