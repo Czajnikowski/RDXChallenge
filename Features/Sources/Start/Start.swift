@@ -30,7 +30,7 @@ struct Start: Reducer {
 
     @Dependency(\.userDefaults) var userDefaults
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some Reducer<State, Action> {
         Scope(
             state: \.self,
             action: /Action.signedIn
@@ -56,7 +56,7 @@ struct Start: Reducer {
         signInAndOut
     }
 
-    private var signInAndOut: some ReducerProtocol<State, Action> {
+    private var signInAndOut: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onboarding(.path(.element(id: _, action: .confirmPIN(.nextTapped)))):

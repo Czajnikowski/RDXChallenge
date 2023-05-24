@@ -26,7 +26,7 @@ public struct Onboarding: Reducer {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .welcome(.startTapped):
@@ -87,7 +87,7 @@ public struct Onboarding: Reducer {
             case confirmPIN(ConfirmPIN.Action)
         }
 
-        public var body: some ReducerProtocol<State, Action> {
+        public var body: some Reducer<State, Action> {
             Scope(
                 state: /State.terms,
                 action: /Action.terms,

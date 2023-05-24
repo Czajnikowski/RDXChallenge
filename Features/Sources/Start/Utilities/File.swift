@@ -7,7 +7,7 @@
 
 import ComposableArchitecture
 
-public struct ProviderToStateReducer<State>: ReducerProtocol {
+public struct ProviderToStateReducer<State>: Reducer {
     public typealias Action = LoadableStateAction<State>
 
     private let provideState: @Sendable () async throws -> State
@@ -16,7 +16,7 @@ public struct ProviderToStateReducer<State>: ReducerProtocol {
         self.provideState = provideState
     }
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .loadState:

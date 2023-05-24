@@ -22,7 +22,7 @@ public struct PersonalInfo: Reducer {
         case nextTapped
     }
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         BindingReducer()
     }
 }
