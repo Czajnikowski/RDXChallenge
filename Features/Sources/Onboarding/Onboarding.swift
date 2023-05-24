@@ -38,6 +38,11 @@ public struct Onboarding: Reducer {
                 return .none
             }
         }
+        .forEach(
+            \.path,
+             action: /Action.path,
+             destination: Path.init
+        )
     }
 
     public struct Path: Reducer {
