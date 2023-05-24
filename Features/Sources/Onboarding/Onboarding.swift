@@ -11,12 +11,20 @@ import ComposableArchitecture
 public struct Onboarding: Reducer {
     public struct State {
         var path = StackState<Path.State>()
+
+        public init(
+            path: StackState<Path.State> = StackState<Path.State>()
+        ) {
+            self.path = path
+        }
     }
 
     public enum Action {
         case welcome(Welcome.Action)
         case path(StackAction<Path.State, Path.Action>)
     }
+
+    public init() {}
 
     public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

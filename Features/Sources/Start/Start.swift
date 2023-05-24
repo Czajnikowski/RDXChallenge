@@ -12,23 +12,32 @@ import Main
 
 struct Start: Reducer {
     enum State {
-        case onboarding
+        case onboarding(Onboarding.State)
         case main
     }
 
     enum Action {
-        case onboarding
+        case onboarding(Onboarding.Action)
         case main
     }
 
-    func reduce(into state: inout State, action: Action) -> ComposableArchitecture.Effect<Action> {
-        .none
+    var body: some ReducerProtocol<State, Action> {
+        Scope(
+            state: /State.onboarding,
+            action: /Action.onboarding,
+            child: Onboarding.init
+        )
+        Scope(
+            state: /State.onboarding,
+            action: /Action.onboarding,
+            child: Onboarding.init
+        )
     }
 }
 
 struct StartView: View {
     let store: StoreOf<Start> = Store(
-        initialState: Start.State.onboarding,
+        initialState: Start.State.onboarding(.init()),
         reducer: Start.init
     )
 
@@ -36,7 +45,7 @@ struct StartView: View {
         SwitchStore(store) {
             CaseLet(
                 /Start.State.onboarding,
-                 action: { Start.Action.onboarding },
+                 action: Start.Action.onboarding,
                  then: OnboardingView.init(store:)
             )
             CaseLet(
@@ -48,9 +57,8 @@ struct StartView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct StartView_Previews: PreviewProvider {
     static var previews: some View {
         StartView()
     }
 }
-
