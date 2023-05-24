@@ -9,17 +9,20 @@ import ComposableArchitecture
 import SwiftUI
 import Onboarding
 import Main
+import DependenciesAdditions
 
 struct Start: Reducer {
     enum State {
-        case onboarding(Onboarding.State)
-        case main
+        case onboarding(Onboarding.State = .init())
+        case main(Main.State)
     }
 
     enum Action {
         case onboarding(Onboarding.Action)
-        case main
+        case main(Main.Action)
     }
+
+    @Dependency(\.userDefaults) var userDefaults
 
     var body: some ReducerProtocol<State, Action> {
         Scope(
@@ -32,12 +35,39 @@ struct Start: Reducer {
             action: /Action.main,
             child: Main.init
         )
+        Reduce { state, action in
+            switch action {
+            case .onboarding(.path(.element(id: _, action: .confirmPIN(.nextTapped)))):
+                let personalInfo = (/State.onboarding)
+                    .extract(from: state)?
+                    .path
+                    .compactMap((/Onboarding.Path.State.personalInfo).extract)
+                    .first
+
+                if let name = personalInfo?.firstName {
+                    /// For some reason it doesn't work in the Preview 🤷🏼‍♂️
+                    state = .main(.init(name: name))
+
+                    return .fireAndForget {
+                        userDefaults.set(
+                            name,
+                            forKey: "hardcoded key for now, sorry, no time"
+                        )
+                    }
+                }
+
+                return .none
+
+            default:
+                return .none
+            }
+        }
     }
 }
 
 struct StartView: View {
     let store: StoreOf<Start> = Store(
-        initialState: Start.State.onboarding(.init()),
+        initialState: Start.State.onboarding(),
         reducer: Start.init
     )
 
@@ -50,7 +80,7 @@ struct StartView: View {
             )
             CaseLet(
                 /Start.State.main,
-                 action: { Start.Action.main },
+                 action: Start.Action.main,
                  then: MainView.init(store:)
             )
         }

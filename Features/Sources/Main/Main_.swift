@@ -11,8 +11,17 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct Main: Reducer {
-    public typealias State = Void
-    public typealias Action = Void
+    public struct State {
+        let name: String
+
+        public init(name: String) {
+            self.name = name
+        }
+    }
+
+    public enum Action {
+        case signOutTapped
+    }
 
     public init() {}
 
@@ -29,6 +38,26 @@ public struct MainView: View {
     }
 
     public var body: some View {
-        Text("Main!")
+        WithViewStore(store, observe: { $0.name }) { viewStore in
+            VStack {
+                Text("Hello \(viewStore.state)!")
+                Button {
+                    viewStore.send(.signOutTapped)
+                } label: {
+                    Text("Sign out")
+                }
+            }
+        }
+    }
+}
+
+struct MainView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainView(
+            store: .init(
+                initialState: .init(name: "Yo"),
+                reducer: EmptyReducer.init
+            )
+        )
     }
 }

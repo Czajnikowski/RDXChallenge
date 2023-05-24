@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 public struct Onboarding: Reducer {
     public struct State {
-        var path = StackState<Path.State>()
+        public var path = StackState<Path.State>()
 
         public init(
             path: StackState<Path.State> = StackState<Path.State>()

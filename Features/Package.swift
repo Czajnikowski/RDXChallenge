@@ -34,13 +34,16 @@ enum Module: String, CaseIterable {
             return Self.allCases
                 .filter(Set(Self.allCases).symmetricDifference(excludedModules).contains)
                 .map(\.targetDependency)
+            + [
+                Dependency.dependenciesAdditions.targetDependency,
+            ]
 
-        case .Main:
+        case .Onboarding:
             return [
                 Dependency.tca.targetDependency,
             ]
 
-        case .Onboarding:
+        case .Main:
             return [
                 Dependency.tca.targetDependency,
             ]
@@ -58,6 +61,7 @@ enum Module: String, CaseIterable {
 
 enum Dependency: String, CaseIterable {
     case tca
+    case dependenciesAdditions
 
     var targetDependency: Target.Dependency {
         .product(
@@ -65,6 +69,9 @@ enum Dependency: String, CaseIterable {
                 switch self {
                 case .tca:
                     return "ComposableArchitecture"
+
+                case .dependenciesAdditions:
+                    return "DependenciesAdditions"
                 }
             }(),
             package: repoName
@@ -77,7 +84,12 @@ enum Dependency: String, CaseIterable {
             return .package(
                 url: "https://github.com/pointfreeco/\(repoName).git",
                 branch: "prerelease/1.0"
+            )
 
+        case .dependenciesAdditions:
+            return .package(
+                url: "https://github.com/tgrapperon/\(repoName).git",
+                from: "0.5.1"
             )
         }
     }
@@ -86,6 +98,9 @@ enum Dependency: String, CaseIterable {
         switch self {
         case .tca:
             return "swift-composable-architecture"
+
+        case .dependenciesAdditions:
+            return "swift-dependencies-additions"
         }
     }
 }

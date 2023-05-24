@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 public struct PersonalInfo: Reducer {
     public struct State: Equatable {
-        @BindingState var firstName: String = ""
+        @BindingState public var firstName: String = ""
         @BindingState var lastName: String = ""
         @BindingState var phoneNumber: String = ""
 
