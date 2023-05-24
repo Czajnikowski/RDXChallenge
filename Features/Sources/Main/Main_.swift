@@ -14,6 +14,8 @@ public struct Main: Reducer {
     public typealias State = Void
     public typealias Action = Void
 
+    public init() {}
+
     public func reduce(into state: inout State, action: Action) -> Effect<Action> {
         .none
     }

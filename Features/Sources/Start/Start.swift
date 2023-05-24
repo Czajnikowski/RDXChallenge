@@ -28,9 +28,9 @@ struct Start: Reducer {
             child: Onboarding.init
         )
         Scope(
-            state: /State.onboarding,
-            action: /Action.onboarding,
-            child: Onboarding.init
+            state: /State.main,
+            action: /Action.main,
+            child: Main.init
         )
     }
 }
