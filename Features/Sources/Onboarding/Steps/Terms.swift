@@ -9,26 +9,30 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct Terms: Reducer {
-    public struct State {
-        var isAccepted: Bool = false
+    public struct State: Equatable {
+        @BindingState var isAccepted: Bool = false
 
         public init() {}
     }
 
-    public enum Action {
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case acceptToggleTapped(Bool)
         case nextTapped
     }
 
-    public func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        switch action {
-        case let .acceptToggleTapped(isAccepted):
-            state.isAccepted = isAccepted
+    public var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case let .acceptToggleTapped(isAccepted):
+                state.isAccepted = isAccepted
 
-            return .none
+                return .none
 
-        default:
-            return .none
+            default:
+                return .none
+            }
         }
     }
 }
@@ -39,24 +43,27 @@ struct TermsView: View {
     var body: some View {
         WithViewStore(
             store,
-            observe: \.isAccepted
+            observe: identity
         ) { viewStore in
             VStack {
                 Toggle(
                     "Terms... do you accept?",
-                    isOn: viewStore.binding(
-                        get: identity,
-                        send: Terms.Action.acceptToggleTapped
-                    )
+                    isOn: viewStore.binding(\.$isAccepted)
                 )
                 Button {
                     viewStore.send(.nextTapped)
                 } label: {
                     Text("Next")
                 }
-                .disabled(!viewStore.state)
+                .disabled(viewStore.isNextButtonDisabled)
             }
         }
+    }
+}
+
+extension Terms.State {
+    var isNextButtonDisabled: Bool {
+        !isAccepted
     }
 }
 
