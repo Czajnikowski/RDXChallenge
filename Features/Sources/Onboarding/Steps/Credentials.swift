@@ -30,7 +30,6 @@ struct CredentialsView: View {
     let store: StoreOf<Credentials>
     
     var body: some View {
-        //maybe use a proper viewstate here...
         WithViewStore(store, observe: identity) { viewStore in
             VStack {
                 TextField("Email", text: viewStore.binding(\.$email))
@@ -40,6 +39,10 @@ struct CredentialsView: View {
                 } label: {
                     Text("Next")
                 }
+                .disabled(
+                    viewStore.email.trimmingCharacters(in: .whitespacesAndNewlines) == ""
+                    || viewStore.password.trimmingCharacters(in: .whitespacesAndNewlines) == ""
+                )
             }
         }
     }
