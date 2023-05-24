@@ -71,7 +71,7 @@ public struct Onboarding: Reducer {
     }
 
     public struct Path: Reducer {
-        public enum State {
+        public enum State: Equatable {
             case terms(Terms.State = .init())
             case credentials(Credentials.State = .init())
             case personalInfo(PersonalInfo.State = .init())

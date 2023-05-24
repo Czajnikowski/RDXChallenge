@@ -10,9 +10,11 @@ import ComposableArchitecture
 
 public struct NewPIN: Reducer {
     public struct State: Equatable {
-        @BindingState var newPIN: String = ""
+        @BindingState var newPIN: String
 
-        public init() {}
+        public init(newPIN: String = "") {
+            self.newPIN = newPIN
+        }
     }
 
     public enum Action: BindableAction {
@@ -45,7 +47,7 @@ struct NewPINView: View {
 
 extension NewPIN.State {
     var isNextButtonDisabled: Bool {
-        newPIN.trimmingCharacters(in: .whitespacesAndNewlines) == ""
+        newPIN.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
