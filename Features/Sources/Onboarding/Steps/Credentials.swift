@@ -46,9 +46,8 @@ struct CredentialsView: View {
 }
 
 extension Credentials.State {
-    fileprivate var isNextButtonDisabled: Bool {
-        email.trimmingCharacters(in: .whitespacesAndNewlines) == ""
-        || password.trimmingCharacters(in: .whitespacesAndNewlines) == ""
+    var isNextButtonDisabled: Bool {
+        [email, password].allNotEmpty
     }
 }
 

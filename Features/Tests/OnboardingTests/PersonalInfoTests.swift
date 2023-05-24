@@ -10,8 +10,8 @@ import ComposableArchitecture
 @testable import Onboarding
 
 @MainActor
-final class PersonalInfoTests: XCTestCase {
-    func testAllFieldsShouldBeFilledToEnableNextButton() async throws {
+final class OnboardingTests: XCTestCase {
+    func testAllFieldsShouldBeFilledInPersonalInfoToEnableNextButton() async throws {
         let store = TestStore(
             initialState: PersonalInfo.State(),
             reducer: PersonalInfo(),
@@ -27,6 +27,25 @@ final class PersonalInfoTests: XCTestCase {
         }
 
         await store.send(.binding(.set(\.$lastName, ""))) {
+            $0 = true
+        }
+    }
+
+    func testAllFieldsShouldBeFilledInCredentialsToEnableNextButton() async throws {
+        let store = TestStore(
+            initialState: Credentials.State(),
+            reducer: Credentials(),
+            observe: \.isNextButtonDisabled
+        )
+
+        XCTAssertTrue(store.state.isNextButtonDisabled)
+
+        await store.send(.binding(.set(\.$email, "yo")))
+        await store.send(.binding(.set(\.password, "yo"))) {
+            $0 = false
+        }
+
+        await store.send(.binding(.set(\.$password, ""))) {
             $0 = true
         }
     }
