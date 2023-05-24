@@ -1,28 +1,98 @@
-// swift-tools-version: 5.8
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 5.7
 
 import PackageDescription
 
 let package = Package(
     name: "Features",
-    products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "Features",
-            targets: ["Features"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "Features",
-            dependencies: []),
-        .testTarget(
-            name: "FeaturesTests",
-            dependencies: ["Features"]),
-    ]
+    platforms: [.iOS(.v16)],
+    products: Module.allCases.map(library(named:)),
+    dependencies: Dependency.allCases.map(\.packageDependency),
+    targets: Module.allCases.map(\.target)
 )
+
+enum Module: String, CaseIterable {
+    case Start
+
+    case Onboarding
+    case Main
+
+    var target: Target {
+        .target(
+            name: name,
+            dependencies: targetDependencies,
+            swiftSettings: [.unsafeFlags(["-Xfrontend", "-warn-concurrency"])]
+        )
+    }
+
+    private var targetDependencies: [Target.Dependency] {
+        switch self {
+        case .Start:
+            let excludedModules = [
+                Module.Start
+            ]
+
+            return Self.allCases
+                .filter(Set(Self.allCases).symmetricDifference(excludedModules).contains)
+                .map(\.targetDependency)
+
+        case .Main:
+            return [
+                Dependency.tca.targetDependency,
+            ]
+
+        case .Onboarding:
+            return [
+                Dependency.tca.targetDependency,
+            ]
+        }
+    }
+
+    var name: String {
+        rawValue
+    }
+
+    var targetDependency: Target.Dependency {
+        .init(stringLiteral: name)
+    }
+}
+
+enum Dependency: String, CaseIterable {
+    case tca
+
+    var targetDependency: Target.Dependency {
+        .product(
+            name: {
+                switch self {
+                case .tca:
+                    return "ComposableArchitecture"
+                }
+            }(),
+            package: repoName
+        )
+    }
+
+    var packageDependency: Package.Dependency {
+        switch self {
+        case .tca:
+            return .package(
+                url: "https://github.com/pointfreeco/\(repoName).git",
+                branch: "prerelease/1.0"
+
+            )
+        }
+    }
+
+    var repoName: String {
+        switch self {
+        case .tca:
+            return "swift-composable-architecture"
+        }
+    }
+}
+
+private func library(named name: Module) -> Product {
+    .library(
+        name: name.name,
+        targets: [name.name]
+    )
+}
