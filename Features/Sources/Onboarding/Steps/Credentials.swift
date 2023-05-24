@@ -39,12 +39,16 @@ struct CredentialsView: View {
                 } label: {
                     Text("Next")
                 }
-                .disabled(
-                    viewStore.email.trimmingCharacters(in: .whitespacesAndNewlines) == ""
-                    || viewStore.password.trimmingCharacters(in: .whitespacesAndNewlines) == ""
-                )
+                .disabled(viewStore.isNextButtonDisabled)
             }
         }
+    }
+}
+
+extension Credentials.State {
+    fileprivate var isNextButtonDisabled: Bool {
+        email.trimmingCharacters(in: .whitespacesAndNewlines) == ""
+        || password.trimmingCharacters(in: .whitespacesAndNewlines) == ""
     }
 }
 
