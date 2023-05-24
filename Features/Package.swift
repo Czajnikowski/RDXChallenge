@@ -8,6 +8,7 @@ let package = Package(
     products: Module.allCases.map(library(named:)),
     dependencies: Dependency.allCases.map(\.packageDependency),
     targets: Module.allCases.map(\.target)
+    + Module.allCases.compactMap(\.testTarget)
 )
 
 enum Module: String, CaseIterable {
@@ -52,6 +53,29 @@ enum Module: String, CaseIterable {
 
     var name: String {
         rawValue
+    }
+
+    var testTarget: Target? {
+        guard let testTargetDependencies else {
+            return nil
+        }
+
+        return Target.testTarget(
+            name: name + "Tests",
+            dependencies: testTargetDependencies
+        )
+    }
+
+    private var testTargetDependencies: [Target.Dependency]? {
+        switch self {
+        case .Start, .Main:
+            return nil
+            
+        case .Onboarding:
+            return [
+                Module.Onboarding.targetDependency
+            ]
+        }
     }
 
     var targetDependency: Target.Dependency {

@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "9EF2C5A4-47AA-4B0B-9380-82B4584EAA6E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "OnboardingTests",
+        "name" : "OnboardingTests"
+      }
+    }
+  ],
+  "version" : 1
+}

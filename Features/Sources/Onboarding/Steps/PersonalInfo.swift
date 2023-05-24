@@ -48,7 +48,7 @@ struct PersonalInfoView: View {
 }
 
 extension PersonalInfo.State {
-    fileprivate var isNextButtonDisabled: Bool {
+    var isNextButtonDisabled: Bool {
         [firstName, lastName, phoneNumber]
             .contains { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     }
