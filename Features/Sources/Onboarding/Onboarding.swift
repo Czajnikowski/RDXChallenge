@@ -9,11 +9,45 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct Onboarding: Reducer {
-    public typealias State = Void
-    public typealias Action = Void
+    public struct State {
+        var path = StackState<Path.State>()
+    }
 
-    public func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        .none
+    public enum Action {
+        case welcome(Welcome.Action)
+        case path(StackAction<Path.State, Path.Action>)
+    }
+
+    public var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .welcome(.startTapped):
+                state.path.append(.terms)
+
+                return .none
+
+            default:
+                return .none
+            }
+        }
+    }
+
+    public struct Path: Reducer {
+        public enum State {
+            case terms
+        }
+
+        public enum Action {
+            case terms
+        }
+
+        public var body: some ReducerProtocol<State, Action> {
+            Scope(
+                state: /State.terms,
+                action: /Action.terms,
+                child: Terms.init
+            )
+        }
     }
 }
 
@@ -25,6 +59,38 @@ public struct OnboardingView: View {
     }
 
     public var body: some View {
-        Text("Welcome!")
+        NavigationStackStore(
+            store.scope(
+                state: \.path,
+                action: Onboarding.Action.path
+            )
+        ) {
+            WelcomeView(
+                store: store.stateless.scope(
+                    state: { $0 },
+                    action: Onboarding.Action.welcome
+                )
+            )
+        } destination: {
+            switch $0 {
+            case .terms:
+                CaseLet(
+                    /Onboarding.Path.State.terms,
+                     action: { Onboarding.Path.Action.terms },
+                     then: TermsView.init(store:)
+                )
+            }
+        }
+    }
+}
+
+struct Onboarding_Previews: PreviewProvider {
+    static var previews: some View {
+        OnboardingView(
+            store: .init(
+                initialState: .init(),
+                reducer: Onboarding.init
+            )
+        )
     }
 }
