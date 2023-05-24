@@ -8,12 +8,21 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct Credentials: Reducer {
-    typealias State = Void
-    typealias Action = Void
+public struct Credentials: Reducer {
+    public struct State: Equatable {
+        @BindingState var email: String = ""
+        @BindingState var password: String = ""
 
-    func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        .none
+        public init() {}
+    }
+
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
+        case nextTapped
+    }
+
+    public var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
     }
 }
 
@@ -21,12 +30,28 @@ struct CredentialsView: View {
     let store: StoreOf<Credentials>
     
     var body: some View {
-        Text("Credentials")
+        //maybe use a proper viewstate here...
+        WithViewStore(store, observe: identity) { viewStore in
+            VStack {
+                TextField("Email", text: viewStore.binding(\.$email))
+                TextField("Email", text: viewStore.binding(\.$password))
+                Button {
+                    viewStore.send(.nextTapped)
+                } label: {
+                    Text("Next")
+                }
+            }
+        }
     }
 }
 
 struct Credentials_Previews: PreviewProvider {
     static var previews: some View {
-        Text("Hello, world!")
+        CredentialsView(
+            store: .init(
+                initialState: .init(),
+                reducer: Credentials.init
+            )
+        )
     }
 }

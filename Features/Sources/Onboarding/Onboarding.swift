@@ -35,7 +35,7 @@ public struct Onboarding: Reducer {
                 return .none
 
             case .path(.element(id: _, action: .terms(.nextTapped))):
-                state.path.append(.credentials)
+                state.path.append(.credentials())
 
                 return .none
 
@@ -53,12 +53,12 @@ public struct Onboarding: Reducer {
     public struct Path: Reducer {
         public enum State {
             case terms(Terms.State = .init())
-            case credentials
+            case credentials(Credentials.State = .init())
         }
 
         public enum Action {
             case terms(Terms.Action)
-            case credentials
+            case credentials(Credentials.Action)
         }
 
         public var body: some ReducerProtocol<State, Action> {
@@ -107,7 +107,7 @@ public struct OnboardingView: View {
             case .credentials:
                 CaseLet(
                     /Onboarding.Path.State.credentials,
-                     action: { Onboarding.Path.Action.credentials },
+                     action: Onboarding.Path.Action.credentials,
                      then: CredentialsView.init(store:)
                 )
             }
