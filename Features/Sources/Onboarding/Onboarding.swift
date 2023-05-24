@@ -75,7 +75,7 @@ public struct OnboardingView: View {
         ) {
             WelcomeView(
                 store: store.stateless.scope(
-                    state: { $0 },
+                    state: identity,
                     action: Onboarding.Action.welcome
                 )
             )

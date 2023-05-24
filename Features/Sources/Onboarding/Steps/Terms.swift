@@ -45,7 +45,7 @@ struct TermsView: View {
                 Toggle(
                     "Terms... do you accept?",
                     isOn: viewStore.binding(
-                        get: { $0 },
+                        get: identity,
                         send: Terms.Action.acceptToggleTapped
                     )
                 )
