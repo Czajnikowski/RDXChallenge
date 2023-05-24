@@ -8,25 +8,54 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct PersonalInfo: Reducer {
-    typealias State = Void
-    typealias Action = Void
+public struct PersonalInfo: Reducer {
+    public struct State: Equatable {
+        @BindingState var firstName: String = ""
+        @BindingState var lastName: String = ""
+        @BindingState var phoneNumber: String = ""
 
-    func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        .none
+        public init() {}
+    }
+
+    public enum Action: BindableAction {
+        case binding(BindingAction<State>)
+        case nextTapped
+    }
+
+    public var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
     }
 }
 
 struct PersonalInfoView: View {
-let store: StoreOf<PersonalInfo>
+    let store: StoreOf<PersonalInfo>
 
     var body: some View {
-        Text("PersonalInfo")
+        WithViewStore(store, observe: identity) { viewStore in
+            VStack {
+                TextField("First name", text: viewStore.binding(\.$firstName))
+                TextField("Last name", text: viewStore.binding(\.$lastName))
+                TextField("Phone number", text: viewStore.binding(\.$phoneNumber))
+                Button {
+                    viewStore.send(.nextTapped)
+                } label: {
+                    Text("Next")
+                }
+                .disabled(viewStore.isNextButtonDisabled)
+            }
+        }
+    }
+}
+
+extension PersonalInfo.State {
+    fileprivate var isNextButtonDisabled: Bool {
+        [firstName, lastName, phoneNumber]
+            .contains { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     }
 }
 
 struct PersonalInfo_Previews: PreviewProvider {
     static var previews: some View {
-        PersonalInfoView(store: .init(initialState: (), reducer: PersonalInfo()))
+        PersonalInfoView(store: .init(initialState: .init(), reducer: PersonalInfo()))
     }
 }
