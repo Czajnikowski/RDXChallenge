@@ -44,6 +44,11 @@ public struct Onboarding: Reducer {
 
                 return .none
 
+            case .path(.element(id: _, action: .personalInfo(.nextTapped))):
+                state.path.append(.newPIN())
+
+                return .none
+
             default:
                 return .none
             }
@@ -60,12 +65,14 @@ public struct Onboarding: Reducer {
             case terms(Terms.State = .init())
             case credentials(Credentials.State = .init())
             case personalInfo(PersonalInfo.State = .init())
+            case newPIN(NewPIN.State = .init())
         }
 
         public enum Action {
             case terms(Terms.Action)
             case credentials(Credentials.Action)
             case personalInfo(PersonalInfo.Action)
+            case newPIN(NewPIN.Action)
         }
 
         public var body: some ReducerProtocol<State, Action> {
@@ -116,17 +123,26 @@ public struct OnboardingView: View {
                      action: Onboarding.Path.Action.terms,
                      then: TermsView.init(store:)
                 )
+
             case .credentials:
                 CaseLet(
                     /Onboarding.Path.State.credentials,
                      action: Onboarding.Path.Action.credentials,
                      then: CredentialsView.init(store:)
                 )
+
             case .personalInfo:
                 CaseLet(
                     /Onboarding.Path.State.personalInfo,
                      action: Onboarding.Path.Action.personalInfo,
                      then: PersonalInfoView.init(store:)
+                )
+
+            case .newPIN:
+                CaseLet(
+                    /Onboarding.Path.State.newPIN,
+                     action: Onboarding.Path.Action.newPIN,
+                     then: NewPINView.init(store:)
                 )
             }
         }
