@@ -53,6 +53,10 @@ struct Start: Reducer {
             child: EmptyReducer.init
         )
 
+        signInAndOut
+    }
+
+    private var signInAndOut: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .onboarding(.path(.element(id: _, action: .confirmPIN(.nextTapped)))):
