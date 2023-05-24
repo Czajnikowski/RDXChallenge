@@ -34,27 +34,27 @@ public struct Onboarding: Reducer {
 
                 return .none
 
-            case .path(.element(id: _, action: .terms(.nextTapped))):
-                state.path.append(.credentials())
+            case let .path(.element(id: pathElementID, action: pathElementAction)):
+                switch pathElementAction {
+                case .terms(.nextTapped):
+                    state.path.append(.credentials())
 
-                return .none
+                case .credentials(.nextTapped):
+                    state.path.append(.personalInfo())
 
-            case .path(.element(id: _, action: .credentials(.nextTapped))):
-                state.path.append(.personalInfo())
+                case .personalInfo(.nextTapped):
+                    state.path.append(.newPIN())
 
-                return .none
+                case .newPIN(.nextTapped):
+                    if
+                        let newPINElement = state.path[id: pathElementID],
+                        case let Path.State.newPIN(newPINState) = newPINElement
+                    {
+                        state.path.append(.confirmPIN(.init(newPIN: newPINState.newPIN)))
+                    }
 
-            case .path(.element(id: _, action: .personalInfo(.nextTapped))):
-                state.path.append(.newPIN())
-
-                return .none
-
-            case let .path(.element(id: elementID, action: .newPIN(.nextTapped))):
-                if
-                    let newPINElement = state.path[id: elementID],
-                    case let Path.State.newPIN(newPINState) = newPINElement
-                {
-                    state.path.append(.confirmPIN(.init(newPIN: newPINState.newPIN)))
+                default:
+                    break
                 }
 
                 return .none
