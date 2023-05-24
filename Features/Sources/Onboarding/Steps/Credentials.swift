@@ -33,7 +33,7 @@ struct CredentialsView: View {
         WithViewStore(store, observe: identity) { viewStore in
             VStack {
                 TextField("Email", text: viewStore.binding(\.$email))
-                TextField("Email", text: viewStore.binding(\.$password))
+                TextField("Password", text: viewStore.binding(\.$password))
                 Button {
                     viewStore.send(.nextTapped)
                 } label: {
