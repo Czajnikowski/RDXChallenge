@@ -6,12 +6,11 @@
 //
 
 import SwiftUI
+import Start
 
 @main
 struct RDXChallengeApp: App {
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+        Start.Maker.makeScene()
     }
 }

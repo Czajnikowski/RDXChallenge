@@ -8,15 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		AEAD91012A1E04B300D337A4 /* RDXChallengeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEAD91002A1E04B300D337A4 /* RDXChallengeApp.swift */; };
-		AEAD91032A1E04B300D337A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEAD91022A1E04B300D337A4 /* ContentView.swift */; };
 		AEAD91052A1E04B500D337A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEAD91042A1E04B500D337A4 /* Assets.xcassets */; };
 		AEAD91082A1E04B500D337A4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEAD91072A1E04B500D337A4 /* Preview Assets.xcassets */; };
+		AEAD91102A1E080500D337A4 /* Start in Frameworks */ = {isa = PBXBuildFile; productRef = AEAD910F2A1E080500D337A4 /* Start */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AEAD90FD2A1E04B300D337A4 /* RDXChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RDXChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEAD91002A1E04B300D337A4 /* RDXChallengeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RDXChallengeApp.swift; sourceTree = "<group>"; };
-		AEAD91022A1E04B300D337A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AEAD91042A1E04B500D337A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AEAD91072A1E04B500D337A4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -26,6 +25,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEAD91102A1E080500D337A4 /* Start in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +37,7 @@
 			children = (
 				AEAD90FF2A1E04B300D337A4 /* RDXChallenge */,
 				AEAD90FE2A1E04B300D337A4 /* Products */,
+				AEAD910E2A1E080500D337A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,7 +53,6 @@
 			isa = PBXGroup;
 			children = (
 				AEAD91002A1E04B300D337A4 /* RDXChallengeApp.swift */,
-				AEAD91022A1E04B300D337A4 /* ContentView.swift */,
 				AEAD91042A1E04B500D337A4 /* Assets.xcassets */,
 				AEAD91062A1E04B500D337A4 /* Preview Content */,
 			);
@@ -65,6 +65,13 @@
 				AEAD91072A1E04B500D337A4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AEAD910E2A1E080500D337A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +90,9 @@
 			dependencies = (
 			);
 			name = RDXChallenge;
+			packageProductDependencies = (
+				AEAD910F2A1E080500D337A4 /* Start */,
+			);
 			productName = RDXChallenge;
 			productReference = AEAD90FD2A1E04B300D337A4 /* RDXChallenge.app */;
 			productType = "com.apple.product-type.application";
@@ -137,7 +147,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEAD91032A1E04B300D337A4 /* ContentView.swift in Sources */,
 				AEAD91012A1E04B300D337A4 /* RDXChallengeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +283,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,6 +312,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -337,6 +348,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AEAD910F2A1E080500D337A4 /* Start */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Start;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AEAD90F52A1E04B300D337A4 /* Project object */;
 }
