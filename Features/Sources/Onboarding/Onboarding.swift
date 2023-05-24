@@ -49,6 +49,16 @@ public struct Onboarding: Reducer {
 
                 return .none
 
+            case let .path(.element(id: elementID, action: .newPIN(.nextTapped))):
+                if
+                    let newPINElement = state.path[id: elementID],
+                    case let Path.State.newPIN(newPINState) = newPINElement
+                {
+                    state.path.append(.confirmPIN(.init(newPIN: newPINState.newPIN)))
+                }
+
+                return .none
+
             default:
                 return .none
             }
@@ -66,6 +76,7 @@ public struct Onboarding: Reducer {
             case credentials(Credentials.State = .init())
             case personalInfo(PersonalInfo.State = .init())
             case newPIN(NewPIN.State = .init())
+            case confirmPIN(ConfirmPIN.State)
         }
 
         public enum Action {
@@ -73,6 +84,7 @@ public struct Onboarding: Reducer {
             case credentials(Credentials.Action)
             case personalInfo(PersonalInfo.Action)
             case newPIN(NewPIN.Action)
+            case confirmPIN(ConfirmPIN.Action)
         }
 
         public var body: some ReducerProtocol<State, Action> {
@@ -90,6 +102,16 @@ public struct Onboarding: Reducer {
                 state: /State.personalInfo,
                 action: /Action.personalInfo,
                 child: PersonalInfo.init
+            )
+            Scope(
+                state: /State.newPIN,
+                action: /Action.newPIN,
+                child: NewPIN.init
+            )
+            Scope(
+                state: /State.confirmPIN,
+                action: /Action.confirmPIN,
+                child: ConfirmPIN.init
             )
         }
     }
@@ -143,6 +165,13 @@ public struct OnboardingView: View {
                     /Onboarding.Path.State.newPIN,
                      action: Onboarding.Path.Action.newPIN,
                      then: NewPINView.init(store:)
+                )
+
+            case .confirmPIN:
+                CaseLet(
+                    /Onboarding.Path.State.confirmPIN,
+                     action: Onboarding.Path.Action.confirmPIN,
+                     then: ConfirmPINView.init(store:)
                 )
             }
         }
