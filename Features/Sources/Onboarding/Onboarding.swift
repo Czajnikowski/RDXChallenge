@@ -30,7 +30,7 @@ public struct Onboarding: Reducer {
         Reduce { state, action in
             switch action {
             case .welcome(.startTapped):
-                state.path.append(.terms)
+                state.path.append(.terms())
 
                 return .none
 
@@ -42,11 +42,11 @@ public struct Onboarding: Reducer {
 
     public struct Path: Reducer {
         public enum State {
-            case terms
+            case terms(Terms.State = .init())
         }
 
         public enum Action {
-            case terms
+            case terms(Terms.Action)
         }
 
         public var body: some ReducerProtocol<State, Action> {
@@ -84,7 +84,7 @@ public struct OnboardingView: View {
             case .terms:
                 CaseLet(
                     /Onboarding.Path.State.terms,
-                     action: { Onboarding.Path.Action.terms },
+                     action: Onboarding.Path.Action.terms,
                      then: TermsView.init(store:)
                 )
             }
