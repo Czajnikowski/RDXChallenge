@@ -58,6 +58,16 @@ struct Start: Reducer {
 
                 return .none
 
+            case .main(.signOutTapped):
+                state = .onboarding()
+
+                return .fireAndForget {
+                    userDefaults.set(
+                        String?.none,
+                        forKey: "hardcoded key for now, sorry, no time"
+                    )
+                }
+
             default:
                 return .none
             }
