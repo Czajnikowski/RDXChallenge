@@ -49,13 +49,18 @@ struct PersonalInfoView: View {
 
 extension PersonalInfo.State {
     var isNextButtonDisabled: Bool {
-        [firstName, lastName, phoneNumber]
-            .contains { $0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        [firstName, lastName, phoneNumber].allNotEmpty
     }
 }
 
 struct PersonalInfo_Previews: PreviewProvider {
     static var previews: some View {
         PersonalInfoView(store: .init(initialState: .init(), reducer: PersonalInfo()))
+    }
+}
+
+extension Collection where Element == String {
+    var allNotEmpty: Bool {
+        first(where: { $0.isEmpty }) != nil
     }
 }
