@@ -1,15 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Maciek on 24/05/2023.
-//
-
 import SwiftUI
 import ComposableArchitecture
 
-public struct Welcome {
+public enum Welcome {
     public typealias State = Void
+    
     public enum Action {
         case startTapped
     }

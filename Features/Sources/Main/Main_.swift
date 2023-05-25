@@ -1,16 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Maciek on 24/05/2023.
-//
-
 /// ⚠️ The `_` suffix (or anthing) in the name is necessary to distinguish our file from a module's main entry point
 
 import SwiftUI
 import ComposableArchitecture
 
-public struct Main {
+public enum Main {
     public struct State {
         let name: String
 
@@ -32,7 +25,7 @@ public struct MainView: View {
     }
 
     public var body: some View {
-        WithViewStore(store, observe: { $0.name }) { viewStore in
+        WithViewStore(store, observe: \.name) { viewStore in
             VStack {
                 Text("Hello \(viewStore.state)!")
                 Button {

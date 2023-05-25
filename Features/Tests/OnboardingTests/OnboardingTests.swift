@@ -1,10 +1,3 @@
-//
-//  PersonalInfoTests.swift
-//  
-//
-//  Created by Maciek on 24/05/2023.
-//
-
 import XCTest
 import ComposableArchitecture
 @testable import Onboarding
