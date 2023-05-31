@@ -15,6 +15,7 @@ enum Module: String, CaseIterable {
     case Start
 
     case Onboarding
+    case Welcome
     case Main
     case Utilities
 
@@ -46,7 +47,7 @@ enum Module: String, CaseIterable {
 
         case .Onboarding:
             return [
-                Module.Utilities.targetDependency
+                Module.Welcome.targetDependency,
             ]
 
         case .Main:
@@ -57,6 +58,12 @@ enum Module: String, CaseIterable {
         case .Utilities:
             return [
                 Dependency.tca.targetDependency
+            ]
+        case .Welcome:
+            return [
+                Module.Utilities.targetDependency,
+
+                Dependency.tca.targetDependency,
             ]
         }
     }
@@ -78,7 +85,7 @@ enum Module: String, CaseIterable {
 
     private var testTargetDependencies: [Target.Dependency]? {
         switch self {
-        case .Start, .Main, .Utilities:
+        case .Start, .Main, .Utilities, .Welcome:
             return nil
             
         case .Onboarding:

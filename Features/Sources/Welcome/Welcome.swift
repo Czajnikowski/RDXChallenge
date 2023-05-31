@@ -7,12 +7,19 @@ public enum Welcome {
     public typealias Action = Never
 }
 
-struct WelcomeView<DestinationState>: View {
+public struct WelcomeView<DestinationState>: View {
     let store: Store<Welcome.State, Welcome.Action>
-
     let navigationLinkModifier: NavigationLinkModifier<DestinationState>
 
-    var body: some View {
+    public init(
+        store: Store<Welcome.State, Welcome.Action>,
+        navigationLinkModifier: NavigationLinkModifier<DestinationState>
+    ) {
+        self.store = store
+        self.navigationLinkModifier = navigationLinkModifier
+    }
+
+    public var body: some View {
         Text("Welcome!")
         Text("Start")
             .modifier(navigationLinkModifier)
