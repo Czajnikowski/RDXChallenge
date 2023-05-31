@@ -11,7 +11,6 @@ public struct Credentials: Reducer {
 
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case nextTapped
     }
 
     public var body: some Reducer<State, Action> {
@@ -27,9 +26,7 @@ struct CredentialsView: View {
             VStack {
                 TextField("Email", text: viewStore.binding(\.$email))
                 TextField("Password", text: viewStore.binding(\.$password))
-                Button {
-                    viewStore.send(.nextTapped)
-                } label: {
+                NavigationLink(state: Onboarding.Path.State.personalInfo()) {
                     Text("Next")
                 }
                 .disabled(viewStore.isNextButtonDisabled)
@@ -46,11 +43,13 @@ extension Credentials.State {
 
 struct Credentials_Previews: PreviewProvider {
     static var previews: some View {
-        CredentialsView(
-            store: .init(
-                initialState: .init(),
-                reducer: Credentials.init
+        NavigationStack {
+            CredentialsView(
+                store: .init(
+                    initialState: .init(),
+                    reducer: Credentials.init
+                )
             )
-        )
+        }
     }
 }

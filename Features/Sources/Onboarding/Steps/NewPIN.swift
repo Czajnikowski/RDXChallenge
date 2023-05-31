@@ -12,7 +12,6 @@ public struct NewPIN: Reducer {
 
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case nextTapped
     }
 
     public var body: some Reducer<State, Action> {
@@ -23,13 +22,13 @@ public struct NewPIN: Reducer {
 struct NewPINView: View {
     let store: StoreOf<NewPIN>
 
+    let provideNextState: () -> Onboarding.Path.State
+
     var body: some View {
         WithViewStore(store, observe: identity) { viewStore in
             VStack {
                 TextField("New PIN", text: viewStore.binding(\.$newPIN))
-                Button {
-                    viewStore.send(.nextTapped)
-                } label: {
+                NavigationLink(state: provideNextState()) {
                     Text("Next")
                 }
                 .disabled(viewStore.isNextButtonDisabled)
@@ -46,6 +45,13 @@ extension NewPIN.State {
 
 struct NewPIN_Previews: PreviewProvider {
     static var previews: some View {
-        NewPINView(store: .init(initialState: .init(), reducer: NewPIN()))
+        NewPINView(
+            store: .init(
+                initialState: .init(),
+                reducer: NewPIN()
+            )
+        ) {
+            .confirmPIN(.init(newPIN: "123"))
+        }
     }
 }

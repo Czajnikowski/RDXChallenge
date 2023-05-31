@@ -14,12 +14,13 @@ Obviously, the app has a bunch of issues at the moment, but I decided to stop co
 - All the logic related to the sign in and out could have been extracted to a dedicated reducer
 - Each onboarding step could have been placed in it's own module
 - ~~There are some typos here and there~~
-- At the end of the day I refactored `.fireAndForget` into `.run` effects, but forgot about cancellation…
+- ~~At the end of the day I refactored `.fireAndForget` into `.run` effects, but forgot about cancellation…~~
 - `ProviderToStateReducer` is likely a mild overengineering
 - ~~Some `struct`s can be simplified to `enum`s~~
 - There is a duplication in onboarding steps - most of them can be generalized into some bindable state + validation (in a shape of the current `isNextButtonDisabled`)
 - No tests (well, four that I added are a drop in the ocean)
 - Tests were the only bonus that I aimed for in given time frame
+- It can actually be done more ergonomically with the `NavigationLink(state:)`
 
 Looking forward to your feedback and the next interview stage 🤷🏼‍♂️
 

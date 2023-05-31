@@ -11,7 +11,6 @@ public struct Terms: Reducer {
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case acceptToggleTapped(Bool)
-        case nextTapped
     }
 
     public var body: some Reducer<State, Action> {
@@ -43,9 +42,7 @@ struct TermsView: View {
                     "Terms... do you accept?",
                     isOn: viewStore.binding(\.$isAccepted)
                 )
-                Button {
-                    viewStore.send(.nextTapped)
-                } label: {
+                NavigationLink(state: Onboarding.Path.State.credentials()) {
                     Text("Next")
                 }
                 .disabled(viewStore.isNextButtonDisabled)
@@ -62,6 +59,8 @@ extension Terms.State {
 
 struct Terms_Previews: PreviewProvider {
     static var previews: some View {
-        TermsView(store: .init(initialState: .init(), reducer: Terms.init))
+        NavigationStack {
+            TermsView(store: .init(initialState: .init(), reducer: Terms.init))
+        }
     }
 }

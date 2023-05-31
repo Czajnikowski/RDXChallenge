@@ -3,10 +3,7 @@ import ComposableArchitecture
 
 public enum Welcome {
     public typealias State = Void
-    
-    public enum Action {
-        case startTapped
-    }
+    public typealias Action = Never
 }
 
 struct WelcomeView: View {
@@ -14,10 +11,9 @@ struct WelcomeView: View {
 
     var body: some View {
         Text("Welcome!")
-        Button {
-            ViewStore(store).send(.startTapped)
-        } label: {
+        NavigationLink(state: Onboarding.Path.State.terms()) {
             Text("Start")
         }
+        .buttonStyle(.bordered)
     }
 }

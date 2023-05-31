@@ -13,50 +13,14 @@ public struct Onboarding: Reducer {
     }
 
     public enum Action {
-        case welcome(Welcome.Action)
+        case welcome
         case path(StackAction<Path.State, Path.Action>)
     }
 
     public init() {}
 
     public var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            case .welcome(.startTapped):
-                state.path.append(.terms())
-
-                return .none
-
-            case let .path(.element(id: pathElementID, action: pathElementAction)):
-                switch pathElementAction {
-                case .terms(.nextTapped):
-                    state.path.append(.credentials())
-
-                case .credentials(.nextTapped):
-                    state.path.append(.personalInfo())
-
-                case .personalInfo(.nextTapped):
-                    state.path.append(.newPIN())
-
-                case .newPIN(.nextTapped):
-                    if
-                        let newPINElement = state.path[id: pathElementID],
-                        case let Path.State.newPIN(newPINState) = newPINElement
-                    {
-                        state.path.append(.confirmPIN(.init(newPIN: newPINState.newPIN)))
-                    }
-
-                default:
-                    break
-                }
-
-                return .none
-
-            default:
-                return .none
-            }
-        }
-        .forEach(
+        EmptyReducer().forEach(
             \.path,
              action: /Action.path,
              destination: Path.init
@@ -124,12 +88,7 @@ public struct OnboardingView: View {
                 action: Onboarding.Action.path
             )
         ) {
-            WelcomeView(
-                store: store.stateless.scope(
-                    state: identity,
-                    action: Onboarding.Action.welcome
-                )
-            )
+            WelcomeView(store: store.stateless.actionless)
         } destination: {
             switch $0 {
             case .terms:
@@ -156,9 +115,16 @@ public struct OnboardingView: View {
             case .newPIN:
                 CaseLet(
                     /Onboarding.Path.State.newPIN,
-                     action: Onboarding.Path.Action.newPIN,
-                     then: NewPINView.init(store:)
-                )
+                     action: Onboarding.Path.Action.newPIN
+                ) { store in
+                    NewPINView(store: store) {
+                        .confirmPIN(
+                            .init(
+                                newPIN: ViewStore(store, observe: \.newPIN).state
+                            )
+                        )
+                    }
+                }
 
             case .confirmPIN:
                 CaseLet(

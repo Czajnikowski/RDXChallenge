@@ -12,7 +12,6 @@ public struct PersonalInfo: Reducer {
 
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case nextTapped
     }
 
     public var body: some Reducer<State, Action> {
@@ -29,9 +28,7 @@ struct PersonalInfoView: View {
                 TextField("First name", text: viewStore.binding(\.$firstName))
                 TextField("Last name", text: viewStore.binding(\.$lastName))
                 TextField("Phone number", text: viewStore.binding(\.$phoneNumber))
-                Button {
-                    viewStore.send(.nextTapped)
-                } label: {
+                NavigationLink(state: Onboarding.Path.State.newPIN()) {
                     Text("Next")
                 }
                 .disabled(viewStore.isNextButtonDisabled)
@@ -48,7 +45,9 @@ extension PersonalInfo.State {
 
 struct PersonalInfo_Previews: PreviewProvider {
     static var previews: some View {
-        PersonalInfoView(store: .init(initialState: .init(), reducer: PersonalInfo()))
+        NavigationStack {
+            PersonalInfoView(store: .init(initialState: .init(), reducer: PersonalInfo()))
+        }
     }
 }
 
