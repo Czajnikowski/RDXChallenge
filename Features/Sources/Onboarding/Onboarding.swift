@@ -1,5 +1,6 @@
 import SwiftUI
 import ComposableArchitecture
+import Utilities
 
 public struct Onboarding: Reducer {
     public struct State {
@@ -88,7 +89,12 @@ public struct OnboardingView: View {
                 action: Onboarding.Action.path
             )
         ) {
-            WelcomeView(store: store.stateless.actionless)
+            WelcomeView(
+                store: store.stateless.actionless,
+                navigationLinkModifier: NavigationLinkModifier(
+                    state: Onboarding.Path.State.terms()
+                )
+            )
         } destination: {
             switch $0 {
             case .terms:

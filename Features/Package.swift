@@ -16,6 +16,7 @@ enum Module: String, CaseIterable {
 
     case Onboarding
     case Main
+    case Utilities
 
     var target: Target {
         .target(
@@ -33,7 +34,11 @@ enum Module: String, CaseIterable {
             ]
 
             return Self.allCases
-                .filter(Set(Self.allCases).symmetricDifference(excludedModules).contains)
+                .filter(
+                    Set(Self.allCases)
+                        .symmetricDifference(excludedModules)
+                        .contains
+                )
                 .map(\.targetDependency)
             + [
                 Dependency.dependenciesAdditions.targetDependency,
@@ -41,12 +46,17 @@ enum Module: String, CaseIterable {
 
         case .Onboarding:
             return [
-                Dependency.tca.targetDependency,
+                Module.Utilities.targetDependency
             ]
 
         case .Main:
             return [
                 Dependency.tca.targetDependency,
+            ]
+
+        case .Utilities:
+            return [
+                Dependency.tca.targetDependency
             ]
         }
     }
@@ -68,7 +78,7 @@ enum Module: String, CaseIterable {
 
     private var testTargetDependencies: [Target.Dependency]? {
         switch self {
-        case .Start, .Main:
+        case .Start, .Main, .Utilities:
             return nil
             
         case .Onboarding:
