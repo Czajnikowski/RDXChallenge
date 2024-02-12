@@ -4,7 +4,7 @@ Coding challenge, a part of the interview process for RDX.
 ## First things first
 It was a fun challenge 🎉
 
-Initially, I’ve been a bit sceptical about the tight timeframe, and the fact that I have never used the Composable Navigation before, but the fact that it introduced the solution to work with the `NavigationStack` (which is a super nice API) comforted me a bit, so I decided to take the challenge.
+Initially, I’ve been a bit sceptical about the tight timeframe, and the fact that I have never used the Composable Navigation before (it wasn't even released to the `main` branch yet), but the fact that it introduced the solution to work with the `NavigationStack` (which is a super nice API) comforted me a bit, so I decided to take the challenge.
 
 ## How did I do?
 As you suggested, I spent 5 hrs working on the solution. Well, obviously, I familiarized myself briefly with the spec, the domain and the `prerelease/1.0` branch the day before 🤓
